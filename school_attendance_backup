@@ -1,0 +1,399 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict tvyZcxps0ddE7jgRPmddrpyWv1UXZPVZ02VLgNBhxQVM9bdF0IWAZzIzrBNH8iy
+
+-- Dumped from database version 18.4 (Homebrew)
+-- Dumped by pg_dump version 18.4
+
+-- Started on 2026-10-10 18:10:38 IST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 226 (class 1259 OID 25231)
+-- Name: attendance; Type: TABLE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE TABLE public.attendance (
+    attendance_id integer NOT NULL,
+    student_id integer NOT NULL,
+    attendance_date date NOT NULL,
+    status character varying(10) NOT NULL,
+    CONSTRAINT attendance_status_check CHECK (((status)::text = ANY ((ARRAY['Present'::character varying, 'Absent'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.attendance OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 225 (class 1259 OID 25230)
+-- Name: attendance_attendance_id_seq; Type: SEQUENCE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE SEQUENCE public.attendance_attendance_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.attendance_attendance_id_seq OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 3889 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: attendance_attendance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER SEQUENCE public.attendance_attendance_id_seq OWNED BY public.attendance.attendance_id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 25197)
+-- Name: attendance_raw; Type: TABLE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE TABLE public.attendance_raw (
+    record_id integer NOT NULL,
+    student_name character varying(50),
+    class_name character varying(10),
+    class_teacher character varying(50),
+    attendance_date date,
+    status character varying(10)
+);
+
+
+ALTER TABLE public.attendance_raw OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 219 (class 1259 OID 25196)
+-- Name: attendance_raw_record_id_seq; Type: SEQUENCE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE SEQUENCE public.attendance_raw_record_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.attendance_raw_record_id_seq OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 3890 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: attendance_raw_record_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER SEQUENCE public.attendance_raw_record_id_seq OWNED BY public.attendance_raw.record_id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 25205)
+-- Name: classes; Type: TABLE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE TABLE public.classes (
+    class_id integer NOT NULL,
+    class_name character varying(10) NOT NULL,
+    class_teacher character varying(50)
+);
+
+
+ALTER TABLE public.classes OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 221 (class 1259 OID 25204)
+-- Name: classes_class_id_seq; Type: SEQUENCE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE SEQUENCE public.classes_class_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.classes_class_id_seq OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 3891 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: classes_class_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER SEQUENCE public.classes_class_id_seq OWNED BY public.classes.class_id;
+
+
+--
+-- TOC entry 224 (class 1259 OID 25216)
+-- Name: students; Type: TABLE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE TABLE public.students (
+    student_id integer NOT NULL,
+    student_name character varying(50) NOT NULL,
+    class_id integer NOT NULL
+);
+
+
+ALTER TABLE public.students OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 223 (class 1259 OID 25215)
+-- Name: students_student_id_seq; Type: SEQUENCE; Schema: public; Owner: yuvrajmishra
+--
+
+CREATE SEQUENCE public.students_student_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.students_student_id_seq OWNER TO yuvrajmishra;
+
+--
+-- TOC entry 3892 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: students_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER SEQUENCE public.students_student_id_seq OWNED BY public.students.student_id;
+
+
+--
+-- TOC entry 3713 (class 2604 OID 25234)
+-- Name: attendance attendance_id; Type: DEFAULT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.attendance ALTER COLUMN attendance_id SET DEFAULT nextval('public.attendance_attendance_id_seq'::regclass);
+
+
+--
+-- TOC entry 3710 (class 2604 OID 25200)
+-- Name: attendance_raw record_id; Type: DEFAULT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.attendance_raw ALTER COLUMN record_id SET DEFAULT nextval('public.attendance_raw_record_id_seq'::regclass);
+
+
+--
+-- TOC entry 3711 (class 2604 OID 25208)
+-- Name: classes class_id; Type: DEFAULT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.classes ALTER COLUMN class_id SET DEFAULT nextval('public.classes_class_id_seq'::regclass);
+
+
+--
+-- TOC entry 3712 (class 2604 OID 25219)
+-- Name: students student_id; Type: DEFAULT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.students ALTER COLUMN student_id SET DEFAULT nextval('public.students_student_id_seq'::regclass);
+
+
+--
+-- TOC entry 3883 (class 0 OID 25231)
+-- Dependencies: 226
+-- Data for Name: attendance; Type: TABLE DATA; Schema: public; Owner: yuvrajmishra
+--
+
+COPY public.attendance (attendance_id, student_id, attendance_date, status) FROM stdin;
+1	1	2024-07-01	Present
+2	1	2024-07-02	Present
+3	2	2024-07-01	Present
+4	2	2024-07-02	Absent
+5	3	2024-07-01	Absent
+6	3	2024-07-02	Present
+\.
+
+
+--
+-- TOC entry 3877 (class 0 OID 25197)
+-- Dependencies: 220
+-- Data for Name: attendance_raw; Type: TABLE DATA; Schema: public; Owner: yuvrajmishra
+--
+
+COPY public.attendance_raw (record_id, student_name, class_name, class_teacher, attendance_date, status) FROM stdin;
+1	Riya	10-A	Mrs. Sharma	2024-07-01	Present
+2	Riya	10-A	Mrs. Sharma	2024-07-02	Present
+3	Arjun	10-A	Mrs. Sharma	2024-07-01	Present
+4	Arjun	10-A	Mrs. Sharma	2024-07-02	Absent
+5	Simran	10-B	Mr. Verma	2024-07-01	Absent
+6	Simran	10-B	Mr. Verma	2024-07-02	Present
+7	Riya	10-A	Mrs. Sharma	2024-07-01	Present
+8	Riya	10-A	Mrs. Sharma	2024-07-02	Present
+9	Arjun	10-A	Mrs. Sharma	2024-07-01	Present
+10	Arjun	10-A	Mrs. Sharma	2024-07-02	Absent
+11	Simran	10-B	Mr. Verma	2024-07-01	Absent
+12	Simran	10-B	Mr. Verma	2024-07-02	Present
+\.
+
+
+--
+-- TOC entry 3879 (class 0 OID 25205)
+-- Dependencies: 222
+-- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: yuvrajmishra
+--
+
+COPY public.classes (class_id, class_name, class_teacher) FROM stdin;
+1	10-A	Mrs. Sharma
+2	10-B	Mr. Verma
+\.
+
+
+--
+-- TOC entry 3881 (class 0 OID 25216)
+-- Dependencies: 224
+-- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: yuvrajmishra
+--
+
+COPY public.students (student_id, student_name, class_id) FROM stdin;
+1	Riya	1
+2	Arjun	1
+3	Simran	2
+\.
+
+
+--
+-- TOC entry 3893 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: attendance_attendance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yuvrajmishra
+--
+
+SELECT pg_catalog.setval('public.attendance_attendance_id_seq', 7, true);
+
+
+--
+-- TOC entry 3894 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: attendance_raw_record_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yuvrajmishra
+--
+
+SELECT pg_catalog.setval('public.attendance_raw_record_id_seq', 12, true);
+
+
+--
+-- TOC entry 3895 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: classes_class_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yuvrajmishra
+--
+
+SELECT pg_catalog.setval('public.classes_class_id_seq', 2, true);
+
+
+--
+-- TOC entry 3896 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: students_student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yuvrajmishra
+--
+
+SELECT pg_catalog.setval('public.students_student_id_seq', 3, true);
+
+
+--
+-- TOC entry 3724 (class 2606 OID 25241)
+-- Name: attendance attendance_pkey; Type: CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.attendance
+    ADD CONSTRAINT attendance_pkey PRIMARY KEY (attendance_id);
+
+
+--
+-- TOC entry 3716 (class 2606 OID 25203)
+-- Name: attendance_raw attendance_raw_pkey; Type: CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.attendance_raw
+    ADD CONSTRAINT attendance_raw_pkey PRIMARY KEY (record_id);
+
+
+--
+-- TOC entry 3726 (class 2606 OID 25243)
+-- Name: attendance attendance_student_id_attendance_date_key; Type: CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.attendance
+    ADD CONSTRAINT attendance_student_id_attendance_date_key UNIQUE (student_id, attendance_date);
+
+
+--
+-- TOC entry 3718 (class 2606 OID 25214)
+-- Name: classes classes_class_name_key; Type: CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.classes
+    ADD CONSTRAINT classes_class_name_key UNIQUE (class_name);
+
+
+--
+-- TOC entry 3720 (class 2606 OID 25212)
+-- Name: classes classes_pkey; Type: CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.classes
+    ADD CONSTRAINT classes_pkey PRIMARY KEY (class_id);
+
+
+--
+-- TOC entry 3722 (class 2606 OID 25224)
+-- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_pkey PRIMARY KEY (student_id);
+
+
+--
+-- TOC entry 3728 (class 2606 OID 25244)
+-- Name: attendance attendance_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.attendance
+    ADD CONSTRAINT attendance_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.students(student_id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3727 (class 2606 OID 25225)
+-- Name: students students_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: yuvrajmishra
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(class_id);
+
+
+-- Completed on 2026-10-10 18:10:38 IST
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict tvyZcxps0ddE7jgRPmddrpyWv1UXZPVZ02VLgNBhxQVM9bdF0IWAZzIzrBNH8iy
+
